@@ -1,0 +1,8 @@
+{
+  "action": "create",
+  "resourceName": "",
+  "resourceDescription": "<script>alert(1)</script>",
+  "resourceAvailable": true,
+  "resourcePrice": -5,
+  "resourcePriceUnit": "invalid"
+}
