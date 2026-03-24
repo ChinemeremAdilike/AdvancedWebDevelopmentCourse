@@ -1,47 +1,115 @@
-// resources.js — render action buttons only (validation lives in form.js)
-document.addEventListener("DOMContentLoaded", () => {
-  const actions = document.getElementById("resourceActions");
-  if (!actions) return;
+// ===============================
+// 1) DOM references
+// ===============================
+const actions = document.getElementById("resourceActions");
+const resourceNameContainer = document.getElementById("resourceNameContainer");
 
-  const role = "admin"; // change to "reserver" if needed
+// Example roles
+const role = "admin"; // "reserver" | "admin"
 
-  const BUTTON_BASE =
-    "w-full rounded-2xl px-6 py-3 text-sm font-semibold transition-all duration-200 ease-out";
-  const BUTTON_THEME =
-    "bg-brand-primary text-white hover:bg-brand-dark/80 shadow-soft";
+// Will hold a reference to the Create button so we can enable/disable it
+let createButton = null;
+let updateButton = null;
+let deleteButton = null;
 
-  const addBtn = (label, value) => {
-    const btn = document.createElement("button");
-    btn.type = "submit";
-    btn.name = "action";
-    btn.value = value;
-    btn.textContent = label;
-    btn.className = `${BUTTON_BASE} ${BUTTON_THEME}`;
-    actions.appendChild(btn);
-    return btn;
-  };
+// ===============================
+// 2) Button creation helpers
+// ===============================
 
-  const setEnabled = (btn, enabled) => {
-    if (!btn) return;
-    btn.disabled = !enabled;
-    btn.classList.toggle("cursor-not-allowed", !enabled);
-    btn.classList.toggle("opacity-50", !enabled);
-    if (!enabled) {
-      btn.classList.remove("hover:bg-brand-dark/80");
-    } else {
-      btn.classList.add("hover:bg-brand-dark/80");
-    }
-  };
+const BUTTON_BASE_CLASSES =
+  "w-full rounded-2xl px-6 py-3 text-sm font-semibold transition-all duration-200 ease-out shadow-soft";
 
-  // Create the buttons
-  const createBtn = addBtn("Create", "create");
-  createBtn.id = "createBtn"; // <-- stable id so form.js can always find it
+const BUTTON_ENABLED_CLASSES =
+  "bg-brand-primary text-white hover:bg-brand-dark/80";
 
-  const updateBtn = role === "admin" ? addBtn("Update", "update") : null;
-  const deleteBtn = role === "admin" ? addBtn("Delete", "delete") : null;
+function addButton({ label, value }) {
+  const btn = document.createElement("button");
+  btn.type = "submit";
+  btn.textContent = label;
+  btn.name = "action";
+  btn.value = value;
+  btn.className = `${BUTTON_BASE_CLASSES} ${BUTTON_ENABLED_CLASSES}`;
+  actions.appendChild(btn);
+  return btn;
+}
 
-  // Disabled by default; form.js will enable Create when inputs are valid
-  setEnabled(createBtn, false);
-  setEnabled(updateBtn, false);
-  setEnabled(deleteBtn, false);
-});
+function setButtonEnabled(btn, enabled) {
+  if (!btn) return;
+
+  btn.disabled = !enabled;
+
+  btn.classList.toggle("cursor-not-allowed", !enabled);
+  btn.classList.toggle("opacity-50", !enabled);
+
+  if (!enabled) {
+    btn.classList.remove("hover:bg-brand-dark/80");
+  } else {
+    btn.classList.add("hover:bg-brand-dark/80");
+  }
+}
+
+// Render Create / Update / Delete buttons (ORIGINAL UI)
+function renderActionButtons() {
+  createButton = addButton({ label: "Create", value: "create" });
+  updateButton = addButton({ label: "Update", value: "update" });
+  deleteButton = addButton({ label: "Delete", value: "delete" });
+
+  // Disable ALL by default (C1 requirement: Create only becomes enabled when valid)
+  setButtonEnabled(createButton, false);
+  setButtonEnabled(updateButton, false);
+  setButtonEnabled(deleteButton, false);
+}
+
+// ===============================
+// 3) Input creation (ORIGINAL UI)
+// ===============================
+function createResourceNameInput() {
+  const input = document.createElement("input");
+
+  input.id = "resourceName";
+  input.name = "resourceName";
+  input.type = "text";
+  input.placeholder = "e.g., Meeting Room A";
+
+  input.className = `
+    mt-2 w-full rounded-2xl border border-black/10 bg-white
+    px-4 py-3 text-sm outline-none
+    focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/30
+    transition-all duration-200 ease-out
+  `;
+
+  resourceNameContainer.appendChild(input);
+  return input;
+}
+
+// ===============================
+// ✅ 4) VALIDATION HELPERS (C1)
+// ===============================
+window._resourceValidators = {
+  isValidName(v) {
+    v = v.trim();
+    return /^[a-zA-Z0-9äöåÄÖÅ ]+$/.test(v) && v.length >= 5 && v.length <= 30;
+  },
+
+  isValidDescription(v) {
+    v = v.trim();
+    return v.length >= 10 && v.length <= 50;
+  },
+
+  // ✅ FIXED: Empty price is now INVALID
+  isValidPrice(v) {
+    if (v.trim() === "") return false; // 🔥 C1 FIX: empty is invalid
+    return !isNaN(v) && Number(v) >= 0;
+  },
+
+  markField(el, ok) {
+    el.classList.remove("is-valid", "is-invalid");
+    el.classList.add(ok ? "is-valid" : "is-invalid");
+  }
+};
+
+// ===============================
+// 5) Bootstrap UI (ORIGINAL)
+// ===============================
+renderActionButtons();
+createResourceNameInput();
