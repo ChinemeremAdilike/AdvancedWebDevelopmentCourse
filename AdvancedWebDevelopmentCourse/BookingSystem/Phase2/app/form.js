@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const createBtn = [...document.querySelectorAll("button")]
     .find(btn => btn.value === "create");
 
-  // ✅ Enable/disable Create button
   function setCreateEnabled(ok) {
     if (!createBtn) return;
     createBtn.disabled = !ok;
@@ -29,20 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
     createBtn.classList.toggle("opacity-50", !ok);
   }
 
-  // ✅ Validate ALL fields (Task C rule)
   function validateAll() {
     const n = isValidName(nameEl.value);
     const d = isValidDescription(descEl.value);
     const p = isValidPrice(priceEl.value);
-
     const u = [...unitEls].some(r => r.checked);
 
-    // ✅ Apply green/red feedback
     markField(nameEl, n);
     markField(descEl, d);
     markField(priceEl, p);
 
-    // ✅ ENFORCE price unit selection 
     unitEls.forEach(radio => {
       const label = radio.parentElement;
       if (u) {
@@ -56,29 +51,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ok = n && d && p && u;
     setCreateEnabled(ok);
-
     return ok;
   }
 
-  // ✅ Attach validation events
   nameEl.addEventListener("input", validateAll);
   descEl.addEventListener("input", validateAll);
   priceEl.addEventListener("input", validateAll);
   unitEls.forEach(r => r.addEventListener("change", validateAll));
 
-  // First run
   validateAll();
 
-  // ✅ FINAL SUBMISSION BEHAVIOR (CSR-ONLY — Task C)
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
     if (!validateAll()) {
       alert("❌ Fix validation errors before submitting.");
       return;
     }
-
-    // ✅ For Task C validation — NO NETWORK CALL IS REQUIRED
     alert("✅ Validation OK — CSR only (Task C passed)");
   });
 
