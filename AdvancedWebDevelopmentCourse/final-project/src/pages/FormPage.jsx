@@ -40,67 +40,77 @@ export default function FormPage() {
     <>
       <Header />
 
-      <main style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
-        <h1>Form Page</h1>
-        <p>Please fill in the form and submit the data to httpbin.</p>
+      <main className="mx-auto max-w-3xl px-6 py-16 flex-grow">
+        <h1 className="text-3xl font-semibold text-center">Form Page</h1>
+        <p className="mt-2 text-center text-black/70">
+          Please fill in the form and submit the data to httpbin.
+        </p>
 
-        <form onSubmit={handleSubmit} style={{ marginTop: "1.5rem" }}>
-          <div style={{ marginBottom: "1rem" }}>
-            <label>
+        <form
+          onSubmit={handleSubmit}
+          className="mt-10 space-y-6"
+        >
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
               Name
-              <br />
-              <input
-                type="text"
-                name="name"
-                required
-                style={{ width: "100%", padding: "0.5rem" }}
-              />
             </label>
+            <input
+              type="text"
+              name="name"
+              required
+              className="w-full rounded-md border border-gray-300 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary"
+            />
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <label>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
               Email
-              <br />
-              <input
-                type="email"
-                name="email"
-                required
-                style={{ width: "100%", padding: "0.5rem" }}
-              />
             </label>
+            <input
+              type="email"
+              name="email"
+              required
+              className="w-full rounded-md border border-gray-300 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary"
+            />
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <label>
+          {/* Date */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
               Date
-              <br />
-              <input
-                type="date"
-                name="date"
-                required
-                style={{ width: "100%", padding: "0.5rem" }}
-              />
             </label>
+            <input
+              type="date"
+              name="date"
+              required
+              className="w-full rounded-md border border-gray-300 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary"
+            />
           </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
-          </button>
+          <div className="text-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-xl bg-brand-primary px-8 py-3 text-sm font-semibold
+                         text-white shadow-soft hover:bg-brand-dark/80
+                         transition-all duration-200 ease-out disabled:opacity-60"
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </div>
         </form>
 
         {response && (
-          <section style={{ marginTop: "2rem" }}>
-            <h2>Server Response</h2>
-            <pre
-              style={{
-                background: "#1e1e1e",
-                color: "#00ff99",
-                padding: "1rem",
-                borderRadius: "8px",
-                overflowX: "auto",
-              }}
-            >
+          <section className="mt-12">
+            <h2 className="text-lg font-semibold mb-2">
+              Server Response
+            </h2>
+            <pre className="rounded-lg bg-black text-green-400 p-4 text-sm overflow-x-auto">
               {JSON.stringify(response, null, 2)}
             </pre>
           </section>

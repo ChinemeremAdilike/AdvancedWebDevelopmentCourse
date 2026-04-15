@@ -6,10 +6,13 @@ import FormPage from "./pages/FormPage";
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/form" element={<FormPage />} />
-      </Routes>
+      {/* Wrapper matches original <body> structure */}
+      <div className="min-h-screen flex flex-col bg-brand-light text-brand-dark">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/form" element={<FormPage />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
