@@ -1,62 +1,13 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
-
+import HomePage from "./pages/HomePage";
 import FormPage from "./pages/FormPage";
-
-function Home() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <section id="center">
-        <nav style={{ marginBottom: "1.5rem" }}>
-          <Link to="/form">Go to Form</Link>
-        </nav>
-
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-
-        <button className="counter" onClick={() => setCount((c) => c + 1)}>
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-        </div>
-        <div id="social">
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-        </div>
-      </section>
-    </>
-  );
-}
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/form" element={<FormPage />} />
       </Routes>
     </BrowserRouter>
