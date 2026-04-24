@@ -14,21 +14,21 @@ export default function FormPage() {
     const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
-      date: formData.get("date"),
+      message: formData.get("message"),
     };
 
     setLoading(true);
     setResponse(null);
 
     try {
-      const res = await fetch("https://httpbin.org/post", {
+      const res = await fetch("/api/form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
-      setResponse(data.json);
+      setResponse(data);
     } catch (error) {
       setResponse({ error: "Failed to submit form" });
     } finally {
@@ -43,13 +43,10 @@ export default function FormPage() {
       <main className="mx-auto max-w-3xl px-6 py-16 flex-grow">
         <h1 className="text-3xl font-semibold text-center">Form Page</h1>
         <p className="mt-2 text-center text-black/70">
-          Please fill in the form and submit the data to httpbin.
+          Please fill in the form and submit the data to the backend API.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-10 space-y-6"
-        >
+        <form onSubmit={handleSubmit} className="mt-10 space-y-6">
           {/* Name */}
           <div>
             <label className="block text-sm font-medium mb-1">
@@ -78,15 +75,14 @@ export default function FormPage() {
             />
           </div>
 
-          {/* Date */}
+          {/* Message */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Date
+              Message
             </label>
-            <input
-              type="date"
-              name="date"
-              required
+            <textarea
+              name="message"
+              rows="4"
               className="w-full rounded-md border border-gray-300 px-3 py-2
                          focus:outline-none focus:ring-2 focus:ring-brand-primary"
             />
